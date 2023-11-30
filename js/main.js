@@ -1,4 +1,3 @@
-
 const simuladorDados = {
     historial: [],
 
@@ -6,27 +5,30 @@ const simuladorDados = {
         const resultado = Math.floor(Math.random() * 6) + 1;
         this.guardarDados(resultado);
         const resultadoOperado = resultado * 2;
-        this.mostrarDados(resultadoOperado); 
+        this.mostrarDados(resultadoOperado);
     },
 
     guardarDados: function (resultado) {
         this.historial.push(resultado);
+        this.actualizarHistorialEnStorage();
         console.log(`Resultado guardado: ${resultado}`);
     },
 
     mostrarDados: function (resultado) {
-        console.log(`Resultado: ${resultado}`);
+        const resultadoDiv = document.getElementById('resultado');
+        resultadoDiv.textContent = `Resultado: ${resultado}`;
     },
 
     mostrarHistorial: function () {
-        console.log(`Historial de Resultados: ${this.historial.join(', ')}`);
+        const historialDiv = document.getElementById('resultado');
+        historialDiv.textContent = `Historial de Resultados: ${this.historial.join(', ')}`;
 
         const valorBuscado = parseInt(prompt("Ingrese un valor para buscar en el historial:"));
         const encontrado = this.buscarResultado(valorBuscado);
         if (encontrado) {
-            console.log(`El valor ${valorBuscado} se encuentra en el historial.`);
+            historialDiv.textContent += `\nEl valor ${valorBuscado} se encuentra en el historial.`;
         } else {
-            console.log(`El valor ${valorBuscado} no se encuentra en el historial.`);
+            historialDiv.textContent += `\nEl valor ${valorBuscado} no se encuentra en el historial.`;
         }
     },
 
@@ -36,34 +38,34 @@ const simuladorDados = {
 
     filtrarResultadosMayoresQue: function (valor) {
         const resultadosFiltrados = this.historial.filter(resultado => resultado > valor);
-        console.log(`Resultados mayores que ${valor}: ${resultadosFiltrados.join(', ')}`);
+        const historialDiv = document.getElementById('resultado');
+        historialDiv.textContent = `Resultados mayores que ${valor}: ${resultadosFiltrados.join(', ')}`;
         return resultadosFiltrados;
+    },
+
+    actualizarHistorialEnStorage: function () {
+        localStorage.setItem('historial', JSON.stringify(this.historial));
+    },
+
+    cargarHistorialDesdeStorage: function () {
+        const historialGuardado = localStorage.getItem('historial');
+        if (historialGuardado) {
+            this.historial = JSON.parse(historialGuardado);
+        }
     }
 };
 
-
-function lanzamientoDeDados() {
-    while (true) {
-        const opcion = prompt("Seleccione una opción:\n1. Lanzar Dado\n2. Mostrar Historial\n3. Filtrar Resultados\n4. Salir");
-
-        switch (opcion) {
-            case '1':
-                simuladorDados.lanzarDado();
-                break;
-            case '2':
-                simuladorDados.mostrarHistorial();
-                break;
-            case '3':
-                const valorFiltro = parseInt(prompt("Ingrese un valor para filtrar:"));
-                simuladorDados.filtrarResultadosMayoresQue(valorFiltro);
-                break;
-            case '4':
-                console.log("Saliendo del juego");
-                return;
-            default:
-                console.log("Opción inexistente");
-        }
-    }
+function lanzarDado() {
+    simuladorDados.lanzarDado();
 }
 
-lanzamientoDeDados();
+function mostrarHistorial() {
+    simuladorDados.mostrarHistorial();
+}
+
+function filtrarResultados() {
+    const valorFiltro = parseInt(prompt("Ingrese un valor para filtrar:"));
+    simuladorDados.filtrarResultadosMayoresQue(valorFiltro);
+}
+
+simuladorDados.cargarHistorialDesdeStorage();

@@ -1,0 +1,35 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+#resultado {
+    font-size: 18px;
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+input[type="button"] {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="button"]:hover {
+    background-color: #45a049;
+}
+
+input[type="button"]:nth-child(odd) {
+    background-color: #008CBA;
+}
+
+input[type="button"]:nth-child(odd):hover {
+    background-color: #0077A8;
+}
